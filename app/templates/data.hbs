@@ -24,29 +24,46 @@
   </div>
   <div class="body">
     <h2>Data Parser below</h2>
+    <p>Select local CSV File:</p>
+    <input id="csv" type="file">
+    <output id="out">
+      <!--file contents will appear here-->
+    </output>
     <script>
     console.log("Get this far");
-    function Upload() {
-      console.log("Started Parsing");
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        var table = document.createElement("table");
-        var rows = e.target.result.split("\n");
-        for (var i = 0; i < rows.length; i++) {
-          var row = table.insertRow(-1);
-          var cells = rows[i].split(",");
-          for (var j = 0; j < cells.length; j++) {
-            var cell = row.insertCell(-1);
-            cell.innerHTML = cells[j];
+    var fileInput = document.getElementById("csv"),
+    readFile = function () {
+        console.log("Started Parsing");
+        var reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById('out').innerHTML = reader.result;
+        };
+        // start reading the file. When it is done, calls the onload event defined above.
+        reader.readAsBinaryString(fileInput.files[0]);
+        reader.onload = function (e) {
+
+          var table = document.createElement("table");
+
+          var rows = e.target.result.split("\n");
+
+          for (var i = 0; i < rows.length; i++) {
+
+            var row = table.insertRow(-1);
+
+            var cells = rows[i].split(",");
+
+            for (var j = 0; j < cells.length; j++) {
+
+              var cell = row.insertCell(-1);
+
+              cell.innerHTML = cells[j];
+
+            }
           }
         }
-        var dvCSV = document.getElementById("dvCSV");
-        dvCSV.innerHTML = "";
-        dvCSV.appendChild(table);
-      }
-      console.log("This worked");
-    }
-    window.onload = Upload();
+        console.log("finished Parsing");
+    };
+    fileInput.addEventListener('change', readFile);
     </script>
     <h2>Data Parser above</h2>
   </div>
