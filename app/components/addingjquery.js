@@ -2,7 +2,7 @@ import $ from 'jquery';
 import Component from '@ember/component';
 
 $.ajax({
-  url: 'latestdata.csv',
+  url: 'latedata.csv',
   dataType: 'text',
 }).done(successFunction);
 
