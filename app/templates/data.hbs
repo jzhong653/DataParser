@@ -47,6 +47,7 @@
           var rows = e.target.result.split("\n");
 
           for (var i = 0; i < rows.length; i++) {
+            console.log("Added " + i + " number of rows");
 
             var row = table.insertRow(-1);
 
@@ -57,11 +58,14 @@
               var cell = row.insertCell(-1);
 
               cell.innerHTML = cells[j];
+              console.log("Added " + j + " number of columns");
 
             }
           }
+          console.log("finished Parsing");
+          document.write(table);
+          console.log("table written");
         }
-        console.log("finished Parsing");
     };
     fileInput.addEventListener('change', readFile);
     </script>
