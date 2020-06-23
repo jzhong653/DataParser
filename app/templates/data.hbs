@@ -44,47 +44,54 @@
         reader.onload = function (e) {
 
           var table = document.createElement("table");
-          var numberTable = document.createElement("numberTable");
+          var displayTable = document.createElement("displayTable");
+          var matching = [];
 
-          numberTable += "<table>"
+          displayTable += "<table>";
 
           var rows = e.target.result.split("\n");
 
-          for (var i = 0; i < rows.length; i++) {
-            console.log("Added " + i + " number of rows");
-
+          for (var i = 1; i < rows.length; i++) {
             var row = table.insertRow(-1);
-
             var cells = rows[i].split(",");
-
-            numberTable += "<tr>";
-
-            for (var j = 3; j < 8; j++) {
-
+            for (var j = 5; j < 6; j++) {
               var cell = row.insertCell(-1);
-
               cell.innerHTML = cells[j];
 
-              numberTable += "<td>" + cells[j] + "<td>";
+              if(matching.length == 0) {
+                var insideArray = new Array(2);
+                insideArray[0] = cells[j];
+                insideArray[1] = 1;
+                matching.push(insideArray);
+              }
 
-              console.log("Added " + j + " number of columns");
+              var checker = 0;
+
+              for(var k = 0; k < matching.length; k++) {
+                if(cells[j] == matching[k][0]){
+                  matching[k][1] += 1;
+                  checker++;
+                }
+              }
+              if(checker == 0) {
+                var insideArray = new Array(2);
+                insideArray[0] = cells[j];
+                insideArray[1] = 1;
+                matching.push(insideArray);
+              }
             }
-            for (var j = 11; j < 12; j++) {
-
-              var cell = row.insertCell(-1);
-
-              cell.innerHTML = cells[j];
-
-              numberTable += "<td>" + cells[j] + "<td>";
-
-              console.log("Added " + j + " number of columns");
-            }
-            numberTable += "</tr>";
           }
-          numberTable += "</table>";
-          console.log("finished Parsing");
-          document.write(numberTable);
-          console.log("table written");
+
+          for(var i = 0; i < matching.length; i++) {
+            displayTable += "<tr>";
+            for(var j = 0; j < 2; j++) {
+              console.log(matching[i][j]);
+              displayTable += "<td>" + matching[i][j] + "</td>";
+            }
+            displayTable += "</tr>";
+          }
+          displayTable += "</table>";
+          document.write(displayTable);
         }
       };
       fileInput.addEventListener('change', readFile);
