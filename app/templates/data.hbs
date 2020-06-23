@@ -29,20 +29,24 @@
     <output id="out">
       <!--file contents will appear here-->
     </output>
-    <script>
-    console.log("Get this far");
-    var fileInput = document.getElementById("csv"),
-    readFile = function () {
+    <div class="table container">
+      <script>
+      console.log("Get this far");
+      var fileInput = document.getElementById("csv"),
+      readFile = function () {
         console.log("Started Parsing");
         var reader = new FileReader();
         reader.onload = function () {
-            document.getElementById('out').innerHTML = reader.result;
+          document.getElementById('out').innerHTML = reader.result;
         };
         // start reading the file. When it is done, calls the onload event defined above.
         reader.readAsBinaryString(fileInput.files[0]);
         reader.onload = function (e) {
 
           var table = document.createElement("table");
+          var numberTable = document.createElement("numberTable");
+
+          numberTable += "<table>"
 
           var rows = e.target.result.split("\n");
 
@@ -53,22 +57,39 @@
 
             var cells = rows[i].split(",");
 
-            for (var j = 0; j < cells.length; j++) {
+            numberTable += "<tr>";
+
+            for (var j = 3; j < 8; j++) {
 
               var cell = row.insertCell(-1);
 
               cell.innerHTML = cells[j];
-              console.log("Added " + j + " number of columns");
 
+              numberTable += "<td>" + cells[j] + "<td>";
+
+              console.log("Added " + j + " number of columns");
             }
+            for (var j = 11; j < 12; j++) {
+
+              var cell = row.insertCell(-1);
+
+              cell.innerHTML = cells[j];
+
+              numberTable += "<td>" + cells[j] + "<td>";
+
+              console.log("Added " + j + " number of columns");
+            }
+            numberTable += "</tr>";
           }
+          numberTable += "</table>";
           console.log("finished Parsing");
-          document.write(table);
+          document.write(numberTable);
           console.log("table written");
         }
-    };
-    fileInput.addEventListener('change', readFile);
-    </script>
+      };
+      fileInput.addEventListener('change', readFile);
+      </script>
+    </div>
     <h2>Data Parser above</h2>
   </div>
 </div>
