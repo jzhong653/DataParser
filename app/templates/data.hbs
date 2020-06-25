@@ -48,7 +48,7 @@
 
           numberTable += "<tr><td>Case Number</td><td>Latitude</td><td>Longitude</td></tr>";
 
-          for (var i = 1; i < rows.length; i++) {
+          for (var i = 1; i < 10000; i++) { //The file is too big to use rows.length, it will cause the computer to crash
 
             var row = table.insertRow(-1);
 
@@ -73,12 +73,10 @@
                 while(cells[k] != Number(cells[k]) && testVariable < 10){
                   k++;
                   testVariable++;
-                  console.log("Next");
                 }
                 cells[j] = cells[k];
               }
 
-              console.log("Kicks out of loop");
 
               k = j;
 
@@ -87,7 +85,6 @@
                   k++;
                   cells[j] = cells[k];
                   testVariable--;
-                  console.log("Checking");
                 }
               }
 
