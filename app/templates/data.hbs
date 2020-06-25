@@ -27,19 +27,15 @@
     <p>Select local CSV File:</p>
     <input id="csv" type="file">
     <output id="out">
-      <!--file contents will appear here-->
     </output>
     <div class="table container">
       <script>
-      console.log("Get this far");
       var fileInput = document.getElementById("csv"),
       readFile = function () {
-        console.log("Started Parsing");
         var reader = new FileReader();
         reader.onload = function () {
           document.getElementById('out').innerHTML = reader.result;
         };
-        // start reading the file. When it is done, calls the onload event defined above.
         reader.readAsBinaryString(fileInput.files[0]);
         reader.onload = function (e) {
 
@@ -50,39 +46,58 @@
 
           var rows = e.target.result.split("\n");
 
-          for (var i = 0; i < rows.length; i++) {
-            console.log("Added " + i + " number of rows");
+          numberTable += "<tr><td>Latitude</td><td>Longitude</td></tr>"
+
+          for (var i = 1; i < rows.length; i++) {
 
             var row = table.insertRow(-1);
 
             var cells = rows[i].split(",");
 
-            numberTable += "<tr>";
+            numberTable += "<tr><td>" + i + "</td>";
 
-            for (var j = 3; j < 8; j++) {
+            var testVariable = 0;
+
+            for (var j = 6; j < 8; j++) {
 
               var cell = row.insertCell(-1);
 
+              if(j == 6) {
+                testVariable = 0;
+              }
+
               cell.innerHTML = cells[j];
 
-              numberTable += "<td>" + cells[j] + "<td>";
+              var k = j;
+              if((j == 6) && (cells[j] != Number(cells[j]))){
+                while(cells[k] != Number(cells[k]) && testVariable < 10){
+                  k++;
+                  testVariable++;
+                  console.log("Next");
+                }
+                cells[j] = cells[k];
+              }
 
-              console.log("Added " + j + " number of columns");
+              console.log("Kicks out of loop");
+
+              k = j;
+
+              if((testVariable != 0) && (j != 6) && (testVariable < 10)){
+                while(testVariable != 0) {
+                  k++;
+                  cells[j] = cells[k];
+                  testVariable--;
+                  console.log("Checking");
+                }
+              }
+
+              if(testVariable == 0){
+              numberTable += "<td>" + cells[j] + "<td>";
             }
-            for (var j = 11; j < 12; j++) {
-
-              var cell = row.insertCell(-1);
-
-              cell.innerHTML = cells[j];
-
-              numberTable += "<td>" + cells[j] + "<td>";
-
-              console.log("Added " + j + " number of columns");
             }
             numberTable += "</tr>";
           }
           numberTable += "</table>";
-          console.log("finished Parsing");
           document.write(numberTable);
           console.log("table written");
         }
