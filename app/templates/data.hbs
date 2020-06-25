@@ -46,7 +46,7 @@
 
           var rows = e.target.result.split("\n");
 
-          numberTable += "<tr><td>Latitude</td><td>Longitude</td></tr>"
+          numberTable += "<tr><td>Case Number</td><td>Latitude</td><td>Longitude</td></tr>";
 
           for (var i = 1; i < rows.length; i++) {
 
@@ -91,7 +91,7 @@
                 }
               }
 
-              if(testVariable == 0){
+              if((testVariable == 0) || ((j == 6) && (cells[j] <= 90))){
               numberTable += "<td>" + cells[j] + "<td>";
             }
             }
