@@ -22,85 +22,61 @@
     }
     </style>
   </div>
+
   <div class="body">
     <h2>Data Parser below</h2>
+
     <p>Select local CSV File:</p>
+
     <input id="csv" type="file">
-    <output id="out">
-    </output>
+
+    <output id="out"></output>
+
     <div class="table container">
       <script>
-      var fileInput = document.getElementById("csv"),
-      readFile = function () {
-        var reader = new FileReader();
-        reader.onload = function () {
-          document.getElementById('out').innerHTML = reader.result;
-        };
-        reader.readAsBinaryString(fileInput.files[0]);
-        reader.onload = function (e) {
+        var fileInput = document.getElementById("csv"),
 
-          var table = document.createElement("table");
-          var numberTable = document.createElement("numberTable");
+        readFile = function () {
+          var reader = new FileReader();
 
-          numberTable += "<table>"
+          reader.onload = function () {
+            document.getElementById('out').innerHTML = reader.result;
+          };
 
-          var rows = e.target.result.split("\n");
+          reader.readAsBinaryString(fileInput.files[0]);
 
-          numberTable += "<tr><td>Case Number</td><td>Latitude</td><td>Longitude</td></tr>";
+          reader.onload = function (e) {
+            var numberTable = document.createElement("numberTable");
 
-          for (var i = 1; i < 10000; i++) { //The file is too big to use rows.length, it will cause the computer to crash
+            numberTable += "<table>"
 
-            var row = table.insertRow(-1);
+            var rows = e.target.result.split("\n");
 
-            var cells = rows[i].split(",");
+            numberTable += "<tr><td>Case Number</td><td>Case Date</td></tr>";
 
-            numberTable += "<tr><td>" + i + "</td>";
+            for (var i = 1; i < 10000; i++) { //The file is too big to use rows.length, it will cause the computer to crash
 
-            var testVariable = 0;
+              var cells = rows[i].split(",");
 
-            for (var j = 6; j < 8; j++) {
+              numberTable += "<tr><td>" + i + "</td>";
 
-              var cell = row.insertCell(-1);
+              var testVariable = 0;
 
-              if(j == 6) {
-                testVariable = 0;
+              for (var j = 11; j < 12; j++) {
+                numberTable += "<td>" + cells[j] + "<td>";
               }
-
-              cell.innerHTML = cells[j];
-
-              var k = j;
-              if((j == 6) && (cells[j] != Number(cells[j]))){
-                while(cells[k] != Number(cells[k]) && testVariable < 10){
-                  k++;
-                  testVariable++;
-                }
-                cells[j] = cells[k];
-              }
-
-
-              k = j;
-
-              if((testVariable != 0) && (j != 6) && (testVariable < 10)){
-                while(testVariable != 0) {
-                  k++;
-                  cells[j] = cells[k];
-                  testVariable--;
-                }
-              }
-
-              if((testVariable == 0) || ((j == 6) && (cells[j] <= 90))){
-              numberTable += "<td>" + cells[j] + "<td>";
+              numberTable += "</tr>";
             }
-            }
-            numberTable += "</tr>";
+            numberTable += "</table>";
+
+            document.write(numberTable);
           }
-          numberTable += "</table>";
-          document.write(numberTable);
-        }
-      };
-      fileInput.addEventListener('change', readFile);
+        };
+
+        fileInput.addEventListener('change', readFile);
       </script>
     </div>
+
     <h2>Data Parser above</h2>
   </div>
 </div>
