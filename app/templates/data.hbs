@@ -60,11 +60,11 @@
 
               numberTable += "<tr><td>" + i + "</td>";
 
-              var testVariable;
-
               for (var j = 11; j < 12; j++) {
-                testVariable = 0;
+                var testVariable = 0;
                 var date = cells[j].split(".");
+                var trial = 0;
+                var h = j;
 
                 for(var k = 0; k < date.length; k++) {
                   if(Number(date[k]) == date[k]) {
@@ -74,6 +74,29 @@
 
                 if(testVariable == 3) {
                   numberTable += "<td>" + cells[j] + "</td>";
+                } else {
+                  while(testVariable < 3 && trial < 5) {
+                    testVariable = 0;
+
+                    h++;
+                    trial++;
+                    
+                    if(cells[h] != null){
+                      var date = cells[h].split(".");
+
+                      for(var k = 0; k < date.length; k++) {
+                        if(Number(date[k]) == date[k]) {
+                          testVariable ++;
+                        }
+                      }
+                    }
+                  }
+
+                  if(testVariable == 3){
+                    cells[j] = cells[h];
+
+                    numberTable += "<td>" + cells[j] + "</td>";
+                  }
                 }
               }
               numberTable += "</tr>";
