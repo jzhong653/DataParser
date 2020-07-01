@@ -34,33 +34,29 @@
 
     <div class="table container">
       <script>
-        var fileInput = document.getElementById("csv"),
+      var fileInput = document.getElementById("csv"),
 
-        readFile = function () {
-          var reader = new FileReader();
+      readFile = function () {
+        var reader = new FileReader();
 
-          reader.onload = function () {
-            document.getElementById('out').innerHTML = reader.result;
-          };
+        reader.onload = function () {
+          document.getElementById('out').innerHTML = reader.result;
+        };
 
-          reader.readAsBinaryString(fileInput.files[0]);
+        reader.readAsBinaryString(fileInput.files[0]);
 
-          reader.onload = function (e) {
-            var numberTable = document.createElement("numberTable");
+        reader.onload = function (e) {
+          var numberTable = document.createElement("numberTable");
+          var matching = [];
 
-            numberTable += "<table>"
+          var rows = e.target.result.split("\n");
 
-            var rows = e.target.result.split("\n");
+          for (var i = 1; i < 10000; i++) { //The file is too big to use rows.length, it will cause the computer to crash
 
-            numberTable += "<tr><td>Case Number</td><td>Case Date</td></tr>";
+            var cells = rows[i].split(",");
 
-            for (var i = 1; i < 10000; i++) { //The file is too big to use rows.length, it will cause the computer to crash
-
-              var cells = rows[i].split(",");
-
-              numberTable += "<tr><td>" + i + "</td>";
-
-              for (var j = 11; j < 12; j++) {
+            for (var j = 11; j < 12; j++) {
+              if(cells[j] != 0 && cells[j] != null) {
                 var testVariable = 0;
                 var date = cells[j].split(".");
                 var trial = 0;
@@ -73,15 +69,40 @@
                 }
 
                 if(testVariable == 3) {
-                  numberTable += "<td>" + cells[j] + "</td>";
+                  if(matching.length == 0) {
+                    var insideArray = new Array(2);
+
+                    insideArray[0] = cells[j];
+                    insideArray[1] = 1;
+
+                    matching.push(insideArray);
+                  } else {
+                    var checkCounter = 0;
+
+                    for(var l = 0; l < matching.length; l++) {
+                      if(cells[j] == matching[k][0]){
+                        matching[k][1]++;
+                        checkCounter++;
+                      }
+                    }
+
+                    if(checkCounter == 0) {
+                      var insideArray = new Array(2);
+
+                      insideArray[0] = cells[j];
+                      insideArray[1] = 1;
+
+                      matching.push(insideArray);
+                    }
+                  }
                 } else {
                   while(testVariable < 3 && trial < 5) {
                     testVariable = 0;
 
                     h++;
                     trial++;
-                    
-                    if(cells[h] != null){
+
+                    if(cells[h] != null && cells[h] != 0){
                       var date = cells[h].split(".");
 
                       for(var k = 0; k < date.length; k++) {
@@ -95,19 +116,57 @@
                   if(testVariable == 3){
                     cells[j] = cells[h];
 
-                    numberTable += "<td>" + cells[j] + "</td>";
+                    if(matching.length == 0) {
+                      var insideArray = new Array(2);
+
+                      insideArray[0] = cells[j];
+                      insideArray[1] = 1;
+
+                      matching.push(insideArray);
+                    } else {
+                      var checkCounter = 0;
+
+                      for(var l = 0; l < matching.length; l++) {
+                        if(cells[j] == matching[k][0]){
+                          matching[k][1]++;
+                          checkCounter++;
+                        }
+                      }
+
+                      if(checkCounter == 0) {
+                        var insideArray = new Array(2);
+
+                        insideArray[0] = cells[j];
+                        insideArray[1] = 1;
+
+                        matching.push(insideArray);
+                      }
+                    }
                   }
                 }
               }
-              numberTable += "</tr>";
             }
-            numberTable += "</table>";
-
-            document.write(numberTable);
           }
-        };
 
-        fileInput.addEventListener('change', readFile);
+          numberTable += "<table><tr><td>Date</td><td>Cases</td></tr>"
+
+          for(var i = 0; i < matching.length; i++) {
+            numberTable += "<tr>";
+
+            for(var j = 0; j < 2; j++) {
+              numberTable += "<td>" + matching[i][j] + "</td>";
+            }
+
+            numberTable += "</tr>";
+          }
+
+          numberTable += "</table>";
+
+          document.write(numberTable);
+        }
+      };
+
+      fileInput.addEventListener('change', readFile);
       </script>
     </div>
 
