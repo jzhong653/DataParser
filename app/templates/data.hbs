@@ -56,19 +56,65 @@
             var cells = rows[i].split(",");
 
             for (var j = 11; j < 12; j++) {
-              if(cells[j] != 0 && cells[j] != null) {
-                var testVariable = 0;
-                var date = cells[j].split(".");
-                var trial = 0;
-                var h = j;
+              var testVariable = 0;
+              var date = cells[j].split(".");
+              var trial = 0;
+              var h = j;
 
-                for(var k = 0; k < date.length; k++) {
-                  if(Number(date[k]) == date[k]) {
-                    testVariable ++;
+              for(var k = 0; k < date.length; k++) {
+                if(Number(date[k]) == date[k]) {
+                  testVariable ++;
+                }
+              }
+
+              if(testVariable == 3) {
+                if(matching.length == 0) {
+                  var insideArray = new Array(2);
+
+                  insideArray[0] = cells[j];
+                  insideArray[1] = 1;
+
+                  matching.push(insideArray);
+                } else {
+                  var checkCounter = 0;
+
+                  for(var l = 0; l < matching.length; l++) {
+                    if(cells[j] == matching[l][0]){
+                      matching[l][1]++;
+                      checkCounter++;
+                    }
+                  }
+
+                  if(checkCounter == 0) {
+                    var insideArray = new Array(2);
+
+                    insideArray[0] = cells[j];
+                    insideArray[1] = 1;
+
+                    matching.push(insideArray);
+                  }
+                }
+              } else {
+                while(testVariable < 3 && trial < 5) {
+                  testVariable = 0;
+
+                  h++;
+                  trial++;
+
+                  if(typeof cells[h] != 'undefined') {
+                    var date = cells[h].split(".");
+
+                    for(var k = 0; k < date.length; k++) {
+                      if(Number(date[k]) == date[k]) {
+                        testVariable ++;
+                      }
+                    }
                   }
                 }
 
-                if(testVariable == 3) {
+                if(testVariable == 3){
+                  cells[j] = cells[h];
+
                   if(matching.length == 0) {
                     var insideArray = new Array(2);
 
@@ -80,8 +126,8 @@
                     var checkCounter = 0;
 
                     for(var l = 0; l < matching.length; l++) {
-                      if(cells[j] == matching[k][0]){
-                        matching[k][1]++;
+                      if(Number(cells[j]) == Number(matching[l][0])){
+                        matching[l][1]++;
                         checkCounter++;
                       }
                     }
@@ -93,54 +139,6 @@
                       insideArray[1] = 1;
 
                       matching.push(insideArray);
-                    }
-                  }
-                } else {
-                  while(testVariable < 3 && trial < 5) {
-                    testVariable = 0;
-
-                    h++;
-                    trial++;
-
-                    if(cells[h] != null && cells[h] != 0){
-                      var date = cells[h].split(".");
-
-                      for(var k = 0; k < date.length; k++) {
-                        if(Number(date[k]) == date[k]) {
-                          testVariable ++;
-                        }
-                      }
-                    }
-                  }
-
-                  if(testVariable == 3){
-                    cells[j] = cells[h];
-
-                    if(matching.length == 0) {
-                      var insideArray = new Array(2);
-
-                      insideArray[0] = cells[j];
-                      insideArray[1] = 1;
-
-                      matching.push(insideArray);
-                    } else {
-                      var checkCounter = 0;
-
-                      for(var l = 0; l < matching.length; l++) {
-                        if(cells[j] == matching[k][0]){
-                          matching[k][1]++;
-                          checkCounter++;
-                        }
-                      }
-
-                      if(checkCounter == 0) {
-                        var insideArray = new Array(2);
-
-                        insideArray[0] = cells[j];
-                        insideArray[1] = 1;
-
-                        matching.push(insideArray);
-                      }
                     }
                   }
                 }
